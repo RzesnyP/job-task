@@ -6,12 +6,13 @@ const menuIcon = document.getElementById("menu-icon");
 const hiddenLinks = document.getElementById("hidden-links");
 const blurBackground = document.getElementById("blur-background");
 
-function fetchData(page = 1) {
-	fetch("https://brandstestowy.smallhost.pl/api/random")
+function fetchData() {
+	const apiEndpoint = "https://brandstestowy.smallhost.pl/api/random";
+	fetch(apiEndpoint)
 		.then((res) => res.json())
 		.then(({ data }) => {
 			if (Array.isArray(data)) {
-				dataCache = [...dataCache, ...data];
+				dataCache = data;
 				createSelectOptions();
 				createGridAndSelectItems(
 					dataCache.slice(0, currentPage * itemsPerPage),
@@ -143,22 +144,5 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
 		}
 	});
 });
-
-function checkScrollPosition() {
-	const windowHeight = window.innerHeight;
-	const documentHeight = document.documentElement.scrollHeight;
-	const scrollPosition = window.scrollY + windowHeight;
-
-	if (scrollPosition >= documentHeight) {
-		loadMoreItems();
-	}
-}
-
-function loadMoreItems() {
-	currentPage += 1;
-	fetchData(currentPage);
-}
-
-window.addEventListener("scroll", checkScrollPosition);
 
 fetchData();
