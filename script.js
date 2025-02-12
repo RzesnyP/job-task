@@ -1,39 +1,46 @@
 let dataCache = [];
+let currentPage = 1;
+const itemsPerPage = 8;
 
 const menuIcon = document.getElementById("menu-icon");
 const hiddenLinks = document.getElementById("hidden-links");
 const blurBackground = document.getElementById("blur-background");
-const compositionMainSection = document.querySelector(
-	".composition-main-section",
-);
 
-function fetchData() {
+function fetchData(page = 1) {
 	fetch("https://brandstestowy.smallhost.pl/api/random")
 		.then((res) => res.json())
 		.then(({ data }) => {
 			if (Array.isArray(data)) {
 				dataCache = [...dataCache, ...data];
-
-				const selectElement = document.getElementById("select-load");
-
-				dataCache.forEach((item) => {
-					const option = document.createElement("option");
-					option.value = item.id;
-					option.textContent = item.id;
-					selectElement.appendChild(option);
-				});
-
-				selectElement.value = "8";
-				createGridAndSelectItems(dataCache.slice(0, 8));
+				createSelectOptions();
+				createGridAndSelectItems(
+					dataCache.slice(0, currentPage * itemsPerPage),
+				);
 			}
 		})
 		.catch(handleError);
 }
 
+function createSelectOptions() {
+	const selectElement = document.getElementById("select-load");
+	selectElement.innerHTML = "";
+
+	dataCache.forEach((item) => {
+		const option = document.createElement("option");
+		option.value = item.id;
+		option.textContent = item.id;
+		selectElement.appendChild(option);
+	});
+
+	selectElement.value = "8";
+}
+
 function handleError(err) {
 	const errorMessage = document.getElementById("error-message");
-	errorMessage.textContent = `Wystąpił błąd ${err.message}`;
-	errorMessage.classList.remove("hidden");
+	if (errorMessage) {
+		errorMessage.textContent = `Wystąpił błąd ${err.message}`;
+		errorMessage.classList.remove("hidden");
+	}
 
 	setTimeout(() => {
 		errorMessage.classList.add("hidden");
@@ -53,27 +60,27 @@ function createGridAndSelectItems(items) {
 
 function onSelectChange() {
 	const select = document.getElementById("select-load");
-	const selectedId = parseInt(select.value);
+	const selectedId = parseInt(select.value, 10);
 	const container = document.getElementById("grid-container");
 
 	const filteredItems = dataCache.filter((item) => item.id <= selectedId);
-	const allItems = dataCache;
+	// const allItems = dataCache;
 
 	container.innerHTML = "";
 	createGridAndSelectItems(filteredItems);
 
-	select.value = selectedCount;
+	// select.value = selectedCount;
 
-	allItems.forEach((item) => {
-		const option = document.createElement("option");
-		option.value = item.id;
-		option.textContent = item.id;
-		select.appendChild(option);
-	});
+	// allItems.forEach((item) => {
+	// 	const option = document.createElement("option");
+	// 	option.value = item.id;
+	// 	option.textContent = item.id;
+	// 	select.appendChild(option);
+	// });
 
-	if (allItems.length > 0) {
-		select.value = allItems[allItems.length - 1].id;
-	}
+	// if (allItems.length > 0) {
+	// 	select.value = allItems[allItems.length - 1].id;
+	// }
 }
 
 function showPopup(item) {
@@ -89,6 +96,8 @@ function showPopup(item) {
 function closePopup() {
 	document.querySelector(".popup").style.display = "none";
 	document.querySelector(".overlay").style.display = "none";
+	const errorMessage = document.getElementById("error-message");
+	errorMessage.classList.add("hidden");
 }
 
 document
@@ -114,6 +123,7 @@ blurBackground.addEventListener("click", () => {
 
 window.addEventListener("resize", () => {
 	if (window.innerWidth > 768) {
+		hiddenLinks.classList.remove("active");
 		blurBackground.classList.remove("active");
 	}
 });
@@ -133,5 +143,22 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
 		}
 	});
 });
+
+function checkScrollPosition() {
+	const windowHeight = window.innerHeight;
+	const documentHeight = document.documentElement.scrollHeight;
+	const scrollPosition = window.scrollY + windowHeight;
+
+	if (scrollPosition >= documentHeight) {
+		loadMoreItems();
+	}
+}
+
+function loadMoreItems() {
+	currentPage += 1;
+	fetchData(currentPage);
+}
+
+window.addEventListener("scroll", checkScrollPosition);
 
 fetchData();
