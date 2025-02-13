@@ -2,9 +2,20 @@ let dataCache = [];
 let currentPage = 1;
 const itemsPerPage = 8;
 
+const benefits = [
+	"Wsparcie rozwoju chrząstki stawowej",
+	"Działanie chondroprotekcyjne",
+	"Zmniejszenie stanu zapalnego i bólu",
+	"Wzmocnienie stawów",
+	"Ochrona przed mikrourazami",
+	"Regeneracja po urazach i zabiegach ortopedycznych",
+	"Poprawa jakości życia",
+];
+
 const menuIcon = document.getElementById("menu-icon");
 const hiddenLinks = document.getElementById("hidden-links");
 const blurBackground = document.getElementById("blur-background");
+const container = document.querySelector(".list-container");
 
 function fetchData() {
 	const apiEndpoint = "https://brandstestowy.smallhost.pl/api/random";
@@ -20,6 +31,23 @@ function fetchData() {
 			}
 		})
 		.catch(handleError);
+
+	benefits.forEach((text, i) => {
+		const item = document.createElement("div");
+		item.classList.add("mobile-list-item");
+
+		const circle = document.createElement("div");
+		circle.classList.add("mobile-circle");
+		circle.textContent = i + 1;
+
+		const description = document.createElement("p");
+		description.classList.add("mobile-text");
+		description.textContent = text;
+
+		item.appendChild(circle);
+		item.appendChild(description);
+		container.appendChild(item);
+	});
 }
 
 function createSelectOptions() {
@@ -65,23 +93,9 @@ function onSelectChange() {
 	const container = document.getElementById("grid-container");
 
 	const filteredItems = dataCache.filter((item) => item.id <= selectedId);
-	// const allItems = dataCache;
 
 	container.innerHTML = "";
 	createGridAndSelectItems(filteredItems);
-
-	// select.value = selectedCount;
-
-	// allItems.forEach((item) => {
-	// 	const option = document.createElement("option");
-	// 	option.value = item.id;
-	// 	option.textContent = item.id;
-	// 	select.appendChild(option);
-	// });
-
-	// if (allItems.length > 0) {
-	// 	select.value = allItems[allItems.length - 1].id;
-	// }
 }
 
 function showPopup(item) {
@@ -100,6 +114,25 @@ function closePopup() {
 	const errorMessage = document.getElementById("error-message");
 	errorMessage.classList.add("hidden");
 }
+
+// function mobileView() {
+// 	benefits.forEach((text, i) => {
+// 		const item = document.createElement("div");
+// 		item.classList.add("mobile-list-item");
+
+// 		const circle = document.createElement("div");
+// 		item.classList.add("mobile-circle");
+// 		circle.textContent = i + 1;
+
+// 		const description = document.createElement("p");
+// 		description.classList.add("mobile-text");
+// 		description.textContent = text;
+
+// 		item.appendChild(circle);
+// 		item.appendChild(description);
+// 		container.appendChild(item);
+// 	});
+// }
 
 document
 	.getElementById("select-load")

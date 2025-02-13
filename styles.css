@@ -15,6 +15,10 @@ body {
 	width: 100%;
 }
 
+.mobile-view {
+	display: none;
+}
+
 .tiles-header {
 	padding-top: 3rem;
 	display: flex;
@@ -267,6 +271,7 @@ nav {
 }
 
 .image-section {
+	margin-top: 50px;
 	grid-area: image;
 	display: flex;
 	align-items: center;
@@ -344,7 +349,7 @@ nav {
 }
 
 .circle {
-	width: 40px;
+	min-width: 45px;
 	height: 40px;
 	border-radius: 50%;
 	background-color: #ffffff;
@@ -580,6 +585,90 @@ h2 {
 		justify-content: space-around;
 	}
 }
+@media (max-width: 768px) {
+	.mobile-circle {
+		font-weight: bold;
+	}
+	.mobile-text {
+		color: black;
+		font-size: 15px;
+	}
+
+	.mobile-circle p {
+		align-items: initial;
+	}
+
+	.mobile-view {
+		display: block;
+		padding: 10px;
+		color: whitesmoke;
+	}
+	.mobile-header {
+		display: flex;
+		justify-content: center;
+		padding-bottom: 1rem;
+		color: black;
+		font-weight: 700;
+	}
+	.mobile-header span {
+		display: inline-block;
+		border-bottom: 2px solid black;
+		border-radius: 5%;
+		padding: 1rem 0;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.mobile-list-item {
+		display: flex;
+		align-items: center;
+		justify-content: start;
+		gap: 10px;
+		margin-bottom: 10px;
+		margin-right: auto;
+	}
+
+	.mobile-circle {
+		min-width: 45px;
+		height: 40px;
+		border-radius: 50%;
+		background-color: #ffffff;
+		color: rgb(0, 0, 0);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 1rem;
+		font-weight: bold;
+		margin: 10px;
+
+		-webkit-box-shadow: 0px 0px 25px 0px rgba(66, 68, 90, 1);
+		-moz-box-shadow: 0px 0px 25px 0px rgba(66, 68, 90, 1);
+		box-shadow: 0px 0px 25px 0px rgba(66, 68, 90, 1);
+	}
+
+	.footer-section span,
+	.composition-item p {
+		font-size: 15px;
+	}
+
+	.feature-card h2,
+	.header-section span,
+	.header-section p,
+	.composition-item h2 {
+		font-size: 1.1rem;
+	}
+
+	.feature-card p {
+		font-size: 11px;
+	}
+	.buy-button {
+		font-size: 15px;
+		margin-bottom: 10px;
+	}
+	.container-btn {
+		display: none;
+	}
+}
 
 @media (min-width: 768px) and (max-width: 1024px) {
 	.grid-item {
@@ -604,7 +693,7 @@ h2 {
 
 @media (max-width: 1024px) {
 	.content-section span,
-	p {
+	.content-section-p {
 		text-align: center;
 	}
 	.logo img {
