@@ -158,7 +158,7 @@ nav {
 .menu-icon {
 	display: none;
 	font-size: 2rem;
-	color: white;
+	color: #ad4844;
 	cursor: pointer;
 }
 
@@ -705,7 +705,7 @@ h2 {
 	}
 
 	.menu-icon {
-		color: black;
+		color: #ad4844;
 	}
 
 	#grid-container {
